@@ -133,9 +133,9 @@ class Macrox {
 
   @:macro static public function build(e:Expr){
     var r = expr_to_ast_creating_expr([e], ast_replace_place_holders);
-    show("ast creating ast: ", r);
+    show("ast", e);
     // trace(scuts.macro.Print.exprStr(r));
-    show("ast creating ast: ", r);
+    // show("ast creating ast: ", r);
     return r;
   }
 
@@ -167,10 +167,10 @@ class Macrox {
         , // anonymous function
         function(){ return 7;}
         , // anonymous function with var (this fails unless you patch HaXe, Macro bug
-//         function(){ 
-//           var foo = 8;
-//           return foo;
-//         }
+        function(){ 
+          var foo = 8;
+          return foo;
+        }
 
     //     , // anonymous function with var, fails due to HaXe macro compiler bug ?
     //     function(){ 
@@ -195,7 +195,10 @@ class Macrox {
     // WTF: why do I need this dummy r2 to prevent a  
     // ./macrox/Macrox.hx|153| lines 153-173 : Duplicate field in object declaration : null
     // failure !???
-    var r_dummy = EArrayDecl([ EFunction(null,{ ret: null, args : [], expr : EBlock([EReturn( EConst(CInt("7")).at()).at()]).at() , params : [] }).at()]).at();
+    var r_dummy = EFunction(null,{ ret: null, args : [], expr : EBlock([EReturn( EConst(CInt("7")).at()).at()]).at() , params : [] }).at();
+    var r_dummy2 = EVars([{ expr : EConst(CInt("8")).at(), name : foo, type : null }]);
+
+
     // if (r2+"" != r+"")
     //   trace("bad!");
     // var r = haxe.Unserializer.run(haxe.Serializer.run(r));
