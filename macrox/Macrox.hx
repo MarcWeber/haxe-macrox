@@ -61,6 +61,9 @@ class Macrox {
 
         var fields = new Array();
         for (f_ in e.fields()){
+          if (f_ == "null"){
+            trace("null field in "+e);
+          }
           fields.push({
               field: f_,
               expr: recurse(e.field(f_))
