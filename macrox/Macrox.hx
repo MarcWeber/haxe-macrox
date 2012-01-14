@@ -59,26 +59,14 @@ class Macrox {
     var r = switch (t){
       case TObject:
 
-        if (false){
-            (EObjectDecl(e.mapFields(function(f, fe){
-              trace(f);
-              return {
-                field: f,
-                expr: recurse(fe)
-              };
-            }))).at();
-        } else {
-          var fields = [];
-          for (f_ in e.fields()){
-            fields.push({
-              return {
-                field: f_,
-                expr: recurse(e.field(f_))
-              };
-            });
-          }
-          EObjectDecl(fields).at();
+        var fields = new Array();
+        for (f_ in e.fields()){
+          fields.push({
+              field: f_,
+              expr: recurse(e.field(f_))
+          });
         }
+        EObjectDecl(fields).at();
 
       case TUnknown:
         if ((""+e).substr(0,4) == "#pos") {
@@ -140,12 +128,17 @@ class Macrox {
         }
     );
 
-    var r_dummy = EFunction(null,{ ret: null, args : [], expr : EBlock([EReturn( EConst(CInt("7")).at()).at()]).at() , params : [] }).at();
-    var r_dummy2 = EVars([{ expr : EConst(CInt("8")).at(), name : foo, type : null }]);
-
     return r;
   }
 
+
+  static public function d(){
+    // this function is not called anywhere. The parser seeing EFunction and
+    // EVars is enough to make it work!
+    var foo = "8";
+//     var r_dummy = EFunction(null,{ ret: null, args : [], expr : EBlock([EReturn( EConst(CInt("7")).at()).at()]).at() , params : [] }).at();
+//     var r_dummy2 = EVars([{ expr : EConst(CInt("8")).at(), name : foo, type : null }]);
+  }
 }
 
 
