@@ -120,7 +120,7 @@ class Macrox {
 
     var foo=  "abc";
 
-    // uncommenting the lines r_dummy* below makes the error go away
+    // uncommenting the lines r_dummy* below makes the error go away (-> Utils.hx)
     var r: Dynamic = build(
         function(){ 
           var foo = 8;
@@ -131,14 +131,6 @@ class Macrox {
     return r;
   }
 
-
-  static public function d(){
-    // this function is not called anywhere. The parser seeing EFunction and
-    // EVars is enough to make it work!
-    var foo = "8";
-//     var r_dummy = EFunction(null,{ ret: null, args : [], expr : EBlock([EReturn( EConst(CInt("7")).at()).at()]).at() , params : [] }).at();
-//     var r_dummy2 = EVars([{ expr : EConst(CInt("8")).at(), name : foo, type : null }]);
-  }
 }
 
 

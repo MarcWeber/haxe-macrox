@@ -97,4 +97,16 @@ class Util {
     }
     // }}}
 
+  static public function d(){
+    // this function is not called anywhere. The parser seeing EFunction and
+    // EVars is enough to make it work!
+    var foo = "8";
+    // using untyped because .at can't be used this way. Itz still enough to make the error go away.
+    var r_dummy = untyped EFunction(null,{ ret: null, args : [], expr : EBlock([EReturn( EConst(CInt("7")).at()).at()]).at() , params : [] }).at();
+    var r_dummy2 = untyped EVars([{ expr : EConst(CInt("8")).at(), name : foo, type : null }]);
+  }
+
+
+
+
 }
