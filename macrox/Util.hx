@@ -8,19 +8,19 @@ using Reflect;
 
 // this may be split into pieces later
 class Util {
-  static public inline function mapFields<T>(o:Dynamic, fun: String -> Dynamic -> T):Array<T>{
+  static public function mapFields<T>(o:Dynamic, fun: String -> Dynamic -> T):Array<T>{
     var r = [];
     // trace(o.fields());
     for (f in o.fields()){
-    //   if (f == "null"){
-    //     trace(f);
-    //   }
-    //   if (f == null){
-    //     // trace("type");
-    //     // trace(o.type);
-    //     // trace("name");
-    //     // trace(o.name);
-    //   }
+      if (f == "null"){
+        // trace(f);
+      }
+      if (f == null){
+        trace("type");
+        // trace(o.type);
+        // trace("name");
+        // trace(o.name);
+      }
       r.push(fun(f, o.field(f)));
     }
     return r;

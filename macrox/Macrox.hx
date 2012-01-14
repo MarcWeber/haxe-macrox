@@ -58,12 +58,27 @@ class Macrox {
     var t = e.typeof();
     var r = switch (t){
       case TObject:
-        (EObjectDecl(e.mapFields(function(f, fe){
-          return {
-            field: f,
-            expr: recurse(fe)
-          };
-        }))).at();
+
+        if (false){
+            (EObjectDecl(e.mapFields(function(f, fe){
+              trace(f);
+              return {
+                field: f,
+                expr: recurse(fe)
+              };
+            }))).at();
+        } else {
+          var fields = [];
+          for (f_ in e.fields()){
+            fields.push({
+              return {
+                field: f_,
+                expr: recurse(e.field(f_))
+              };
+            });
+          }
+          EObjectDecl(fields).at();
+        }
 
       case TUnknown:
         if ((""+e).substr(0,4) == "#pos") {
@@ -104,6 +119,7 @@ class Macrox {
         throw "TODO type: "+t;
     }
 
+    // trace(r);
     return r;
   }
 
@@ -113,6 +129,9 @@ class Macrox {
   }
 
   @:macro static public function test(){
+
+    var foo=  "abc";
+
     // uncommenting the lines r_dummy* below makes the error go away
     var r: Dynamic = build(
         function(){ 
@@ -121,8 +140,8 @@ class Macrox {
         }
     );
 
-var r_dummy = EFunction(null,{ ret: null, args : [], expr : EBlock([EReturn( EConst(CInt("7")).at()).at()]).at() , params : [] }).at();
-//     var r_dummy2 = EVars([{ expr : EConst(CInt("8")).at(), name : foo, type : null }]);
+    var r_dummy = EFunction(null,{ ret: null, args : [], expr : EBlock([EReturn( EConst(CInt("7")).at()).at()]).at() , params : [] }).at();
+    var r_dummy2 = EVars([{ expr : EConst(CInt("8")).at(), name : foo, type : null }]);
 
     return r;
   }
