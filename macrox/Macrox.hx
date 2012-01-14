@@ -36,10 +36,10 @@ class Macrox {
   static public function expr_to_ast_creating_expr(path:Array<Dynamic>, ?patchFun:Array<Dynamic> -> Int -> Null<Dynamic>):Dynamic{
     var l = path.length;
 
-    if (patchFun != null){
-      var p_2 = patchFun(path, l);
-      if (p_2 != null) return p_2;
-    }
+    // if (patchFun != null){
+    //   var p_2 = patchFun(path, l);
+    //   if (p_2 != null) return p_2;
+    // }
 
     var e:Dynamic = path[l-1];
 
@@ -103,105 +103,27 @@ class Macrox {
       default:
         throw "TODO type: "+t;
     }
-//     trace(e);
-//     trace('got');
-//     trace(r);
+
     return r;
   }
 
-  static public function show(msg, exp){
-    // trace(msg);
-    // trace(exp);
-    // trace(scuts.macro.Print.exprStr(exp));
-  }
-
-  static public function ast_replace_place_holders(path:Array<Dynamic>, len:Int):Null<Dynamic>{
-    var h = path[len-1];
-    var is_var = Util.ast_value(h, ["EConst",0,"CIdent",0]);
-    if (is_var != null && is_var.substr(0,3) == "e__"){
-        // for (p in path){
-        //   trace("parent >>:");
-        //   trace(p);
-        // }
-        var n = is_var.substr(3,null);
-        return EConst(CIdent(n)).at();
-        trace("new name "+n);
-        return expr_to_ast_creating_expr([EConst(CIdent("a"))], null);
-    }
-    return null;
-  }
-
   @:macro static public function build(e:Expr){
-    var r = expr_to_ast_creating_expr([e], ast_replace_place_holders);
-    show("ast", e);
-    // trace(scuts.macro.Print.exprStr(r));
-    // show("ast creating ast: ", r);
+    var r = expr_to_ast_creating_expr([e],  null);
     return r;
   }
 
   @:macro static public function test(){
-    /*
-          var name = 'foo';
-          AST.build({
-              var ___name = 5;
-              ___name = 6;
-        })
-    */
-
-    var int_10 = build(10).expr;
-    var foo = "my_var";
-
-    var r: Dynamic = build([ //<< this tests array
-        // int by substitution
-        e__int_10
-        , // int
-        2
-        , // float
-        2.2
-        , // string
-        "string"
-        , // null
-        null
-        , // object
-        { a: "a" }
-        , // anonymous function
-        function(){ return 7;}
-        , // anonymous function with var (this fails unless you patch HaXe, Macro bug
+    // uncommenting the lines r_dummy* below makes the error go away
+    var r: Dynamic = build(
         function(){ 
           var foo = 8;
           return foo;
         }
+    );
 
-    //     , // anonymous function with var, fails due to HaXe macro compiler bug ?
-    //     function(){ 
-    //       var fooX = 8;
-    //       return fooX;
-    //     },
+var r_dummy = EFunction(null,{ ret: null, args : [], expr : EBlock([EReturn( EConst(CInt("7")).at()).at()]).at() , params : [] }).at();
+//     var r_dummy2 = EVars([{ expr : EConst(CInt("8")).at(), name : foo, type : null }]);
 
-
-//         , // block tset, assign C (outer scope), then return 11
-//         {
-//           var C = 8;
-//           return 11;
-//         }
-
-    ]);
-
-    // var r = build({
-    //     var ___name = 5;
-    //     ___name = 6;
-    // });
-
-    // WTF: why do I need this dummy r2 to prevent a  
-    // ./macrox/Macrox.hx|153| lines 153-173 : Duplicate field in object declaration : null
-    // failure !???
-    var r_dummy = EFunction(null,{ ret: null, args : [], expr : EBlock([EReturn( EConst(CInt("7")).at()).at()]).at() , params : [] }).at();
-    var r_dummy2 = EVars([{ expr : EConst(CInt("8")).at(), name : foo, type : null }]);
-
-
-    // if (r2+"" != r+"")
-    //   trace("bad!");
-    // var r = haxe.Unserializer.run(haxe.Serializer.run(r));
     return r;
   }
 
