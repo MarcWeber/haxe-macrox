@@ -104,6 +104,8 @@ class Util {
     // using untyped because .at can't be used this way. Itz still enough to make the error go away.
 //     var r_dummy = untyped EFunction(null,{ ret: null, args : [], expr : EBlock([EReturn( EConst(CInt("7")).at()).at()]).at() , params : [] }).at();
 //     var r_dummy2 = untyped EVars([{ expr : EConst(CInt("8")).at(), name : foo, type : null }]);
+
+    // var x = { type: 7, name: 8 };
   }
 
 

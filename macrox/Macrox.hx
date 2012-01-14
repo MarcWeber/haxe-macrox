@@ -62,7 +62,7 @@ class Macrox {
         var fields = new Array();
         for (f_ in e.fields()){
           if (f_ == "null"){
-            trace("null field in "+e);
+            trace("null field ! , note the ???. Look them up in HaXe source .. Uncomment the var x line in Utils (bottom) to make some of those nulls/??? go away\n  null field found in:"+e);
           }
           fields.push({
               field: f_,
